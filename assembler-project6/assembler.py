@@ -1,6 +1,6 @@
 from parser import Parser, A_COMMAND, C_COMMAND, L_COMMAND
 from symboltable import SymbolTable
-from code import Code
+from hack_code import Code
 from writer import Writer
 
 
@@ -47,10 +47,14 @@ class Assembler:
             if command_type == A_COMMAND:
                 symbol = self.asm_file.symbol()
                 if not symbol.isdigit():
+                    if not self.symbol_table.contains(symbol):
+                        self.symbol_table.add_entry(symbol, self.next_available_address)
+                        self.next_available_address += 1
                     address = self.symbol_table.get_address(symbol)
                 else:
                     address = int(symbol)
                 binary_line = '0' + format(address, '015b')
+
 
             elif command_type == C_COMMAND:
                 dest = self.asm_file.dest()
