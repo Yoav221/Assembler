@@ -12,4 +12,3 @@ class Writer:
 
     def __del__(self):
         self.file.close()
-        print("Closing file:", self.path)
